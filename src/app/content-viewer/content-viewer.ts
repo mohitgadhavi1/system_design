@@ -1,5 +1,5 @@
-import { Component, OnInit, inject, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, PLATFORM_ID, inject, input } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ContentService } from '../services/content.service';
 import { signal, computed } from '@angular/core';
 
@@ -122,6 +122,7 @@ import { signal, computed } from '@angular/core';
 })
 export class ContentViewerComponent implements OnInit {
   private contentService = inject(ContentService);
+  private platformId = inject(PLATFORM_ID);
 
   contentId = input.required<string>();
   content = signal<string>('');
@@ -133,6 +134,12 @@ export class ContentViewerComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.isLoading.set(false);
+      this.content.set('# Loading Content\n\nThis content will load in the browser.');
+      return;
+    }
+
     this.loadContent();
   }
 
