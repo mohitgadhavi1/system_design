@@ -1,12 +1,16 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SidebarComponent } from './sidebar/sidebar';
+import { ContentService } from './services/content.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SidebarComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('system_design.io');
+  private contentService = inject(ContentService);
+
+  contentItems = computed(() => this.contentService.getContentItems()());
 }
