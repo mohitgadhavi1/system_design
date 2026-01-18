@@ -1,0 +1,69 @@
+# Repository Structure
+
+Generated folder/file tree (excluding `.git`, `node_modules`, `dist`, `.angular`).
+
+```text
+./
+  .github/
+    copilot-instructions.md
+  .vscode/
+    extensions.json
+    launch.json
+    tasks.json
+  assets/
+    content/
+      chapter0.md
+      chapter1.md
+      chapter2.md
+      chapter3.md
+      chapter4.md
+      chapter5.md
+      chapter6.md
+      chapter7.md
+      chapter8.md
+      overview.md
+  public/
+    favicon.ico
+  src/
+    app/
+      content-viewer/
+        content-viewer.ts
+      pages/
+        chapter/
+          chapter.ts
+        chapter0/
+          chapter0.ts
+        overview/
+          overview.ts
+      services/
+        content.service.ts
+      sidebar/
+        sidebar.ts
+      app.component.css
+      app.component.html
+      app.config.server.ts
+      app.config.ts
+      app.css
+      app.html
+      app.html.backup
+      app.routes.server.ts
+      app.routes.ts
+      app.spec.ts
+      app.ts
+    index.html
+    main.server.ts
+    main.ts
+    server.ts
+    styles.css
+  .editorconfig
+  .gitignore
+  .postcssrc.json
+  README.md
+  angular.json
+  best-practices.md
+  package-lock.json
+  package.json
+  tsconfig.app.json
+  tsconfig.json
+  tsconfig.spec.json
+```

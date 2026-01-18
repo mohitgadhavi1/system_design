@@ -8,23 +8,10 @@ import { ContentViewerComponent } from '../../content-viewer/content-viewer';
   standalone: true,
   imports: [CommonModule, ContentViewerComponent],
   template: `
-    <main class="main-content">
+    <main class="min-h-screen bg-white">
       <app-content-viewer [contentId]="chapterId"></app-content-viewer>
     </main>
   `,
-  styles: [`
-    .main-content {
-      margin-left: 280px;
-      min-height: 100vh;
-      background: white;
-    }
-
-    @media (max-width: 768px) {
-      .main-content {
-        margin-left: 0;
-      }
-    }
-  `]
 })
 export class ChapterComponent {
   private route = inject(ActivatedRoute);

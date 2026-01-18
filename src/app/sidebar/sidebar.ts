@@ -1,102 +1,148 @@
-import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, input, HostListener, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ContentItem } from '../services/content.service';
+import { DrawerModule } from 'primeng/drawer';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, DrawerModule, ButtonModule, RouterLink, RouterLinkActive],
   host: {
     class: 'block'
   },
   template: `
-    <nav class="sidebar">
-      <div class="sidebar-header">
-        <h2>System Design Course</h2>
-      </div>
-      <ul class="nav-list">
-        @for (item of contentItems(); track item.id) {
-    <li class="nav-item">
-  <a
-    [routerLink]="item.path"
-    routerLinkActive="active"
-    #rla="routerLinkActive"
-    class="nav-link"
-    [attr.aria-current]="rla.isActive ? 'page' : null"
-  >
-    {{ item.title }}
-  </a>
-</li>
-        }
-      </ul>
-    </nav>
+    <p-drawer 
+      [(visible)]="isDrawerVisible"
+      position="left"
+      [modal]="isMobileView"
+      [showCloseIcon]="false"
+      [blockScroll]="isMobileView"
+      [closeOnEscape]="isMobileView"
+      [styleClass]="drawerStyleClass"
+    >
+      <ng-template #header>
+        <div class="w-full px-6 py-4 border-b border-gray-700 mb-4">
+          <div class="flex justify-between items-center">
+            <h2 class="m-0 text-xl font-semibold text-white">Course Content</h2>
+            <button 
+              *ngIf="isMobileView"
+              class="bg-transparent border-none text-white text-3xl cursor-pointer p-0 w-8 h-8 flex items-center justify-center hover:bg-gray-700 rounded transition-colors"
+              (click)="closeDrawer()"
+              aria-label="Close menu"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      
+      <nav aria-label="Course navigation">
+        <ul class="list-none m-0 p-0">
+          @for (item of contentItems(); track item.id) {
+            <li class="mb-1">
+              <a
+                [routerLink]="item.path"
+                routerLinkActive="active"
+                #rla="routerLinkActive"
+                class="block px-6 py-3 text-gray-300 no-underline transition-all duration-200 border-l-4 border-transparent hover:text-white hover:bg-gray-800"
+                [class.active]="rla.isActive"
+                [class.!border-blue-500]="rla.isActive"
+                [class.!bg-gray-800]="rla.isActive"
+                [class.!text-white]="rla.isActive"
+                [attr.aria-current]="rla.isActive ? 'page' : null"
+                (click)="onLinkClick()"
+              >
+                {{ item.title }}
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+    </p-drawer>
   `,
   styles: [`
-    .sidebar {
-      width: 280px;
-      height: 100vh;
-      background: var(--gray-900);
-      color: white;
-      padding: 2rem 0;
-      overflow-y: auto;
-      position: fixed;
-      left: 0;
+    :host ::ng-deep .p-drawer {
+      background-color: #111827;
+    }
+    
+    :host ::ng-deep .p-drawer-content {
+      background-color: #111827;
+    }
+    
+    :host ::ng-deep .sidebar-desktop {
+      top: 56px;
+      height: calc(100vh - 56px);
+    }
+    
+    :host ::ng-deep .sidebar-mobile {
       top: 0;
-    }
-
-    .sidebar-header {
-      padding: 0 1.5rem 2rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 1rem;
-    }
-
-    .sidebar-header h2 {
-      margin: 0;
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: white;
-    }
-
-    .nav-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .nav-item {
-      margin-bottom: 0.25rem;
-    }
-
-    .nav-link {
-      display: block;
-      padding: 0.75rem 1.5rem;
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      transition: all 0.2s ease;
-      border-left: 3px solid transparent;
-    }
-
-    .nav-link:hover {
-      color: white;
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .nav-link.active {
-      color: white;
-      background: rgba(255, 255, 255, 0.1);
-      border-left-color: var(--bright-blue);
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-      }
+      height: 100vh;
     }
   `]
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   contentItems = input.required<ContentItem[]>();
+
+  isMobileView = false;
+  isDrawerVisible = false;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkIfMobile();
+      // On desktop, drawer should be visible by default
+      if (!this.isMobileView) {
+        this.isDrawerVisible = true;
+      }
+    }
+  }
+
+  get drawerStyleClass(): string {
+    const baseClass = '!w-[280px] bg-gray-900 text-white overflow-y-auto';
+    const positionClass = this.isMobileView ? 'sidebar-mobile' : 'sidebar-desktop';
+    return `${baseClass} ${positionClass}`;
+  }
+
+  @HostListener('window:resize', [])
+  onResize() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const wasMobile = this.isMobileView;
+    this.checkIfMobile();
+
+    // Handle transition between mobile and desktop
+    if (wasMobile && !this.isMobileView) {
+      // Switched to desktop - open drawer
+      this.isDrawerVisible = true;
+    } else if (!wasMobile && this.isMobileView) {
+      // Switched to mobile - close drawer
+      this.isDrawerVisible = false;
+    }
+  }
+
+  checkIfMobile() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobileView = window.innerWidth <= 768;
+    }
+  }
+
+  toggleDrawer(): void {
+    this.isDrawerVisible = !this.isDrawerVisible;
+  }
+
+  closeDrawer(): void {
+    if (this.isMobileView) {
+      this.isDrawerVisible = !this.isDrawerVisible;
+    }
+  }
+
+  onLinkClick(): void {
+    // Close drawer on mobile when a link is clicked
+    if (this.isMobileView) {
+      this.closeDrawer();
+    }
+  }
 }

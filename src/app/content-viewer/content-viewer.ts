@@ -35,6 +35,7 @@ import { signal, computed } from '@angular/core';
       color: var(--gray-900);
       border-bottom: 2px solid var(--gray-400);
       padding-bottom: 0.5rem;
+      line-height: 1.2;
     }
 
     :host ::ng-deep .content-viewer h2 {
@@ -42,6 +43,7 @@ import { signal, computed } from '@angular/core';
       font-weight: 600;
       margin: 2rem 0 1rem;
       color: var(--gray-900);
+      line-height: 1.3;
     }
 
     :host ::ng-deep .content-viewer h3 {
@@ -49,11 +51,13 @@ import { signal, computed } from '@angular/core';
       font-weight: 600;
       margin: 1.5rem 0 0.75rem;
       color: var(--gray-900);
+      line-height: 1.3;
     }
 
     :host ::ng-deep .content-viewer p {
       margin: 1rem 0;
       color: var(--gray-700);
+      line-height: 1.7;
     }
 
     :host ::ng-deep .content-viewer ul, :host ::ng-deep .content-viewer ol {
@@ -64,6 +68,7 @@ import { signal, computed } from '@angular/core';
     :host ::ng-deep .content-viewer li {
       margin: 0.5rem 0;
       color: var(--gray-700);
+      line-height: 1.6;
     }
 
     :host ::ng-deep .content-viewer code {
@@ -81,6 +86,7 @@ import { signal, computed } from '@angular/core';
       border-radius: 0.5rem;
       overflow-x: auto;
       margin: 1.5rem 0;
+      font-size: 0.9rem;
     }
 
     :host ::ng-deep .content-viewer pre code {
@@ -116,6 +122,72 @@ import { signal, computed } from '@angular/core';
     @media (max-width: 768px) {
       .content-viewer {
         padding: 1rem;
+      }
+
+      :host ::ng-deep .content-viewer h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      :host ::ng-deep .content-viewer h2 {
+        font-size: 1.5rem;
+        margin: 1.5rem 0 0.75rem;
+      }
+
+      :host ::ng-deep .content-viewer h3 {
+        font-size: 1.25rem;
+        margin: 1.25rem 0 0.5rem;
+      }
+
+      :host ::ng-deep .content-viewer p {
+        font-size: 0.95rem;
+        margin: 0.75rem 0;
+      }
+
+      :host ::ng-deep .content-viewer ul, :host ::ng-deep .content-viewer ol {
+        padding-left: 1.5rem;
+      }
+
+      :host ::ng-deep .content-viewer pre {
+        padding: 1rem;
+        font-size: 0.8rem;
+        border-radius: 0.25rem;
+      }
+
+      :host ::ng-deep .content-viewer blockquote {
+        padding-left: 1rem;
+        margin: 1rem 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .content-viewer {
+        padding: 0.75rem;
+      }
+
+      :host ::ng-deep .content-viewer h1 {
+        font-size: 1.75rem;
+      }
+
+      :host ::ng-deep .content-viewer h2 {
+        font-size: 1.375rem;
+      }
+
+      :host ::ng-deep .content-viewer h3 {
+        font-size: 1.125rem;
+      }
+
+      :host ::ng-deep .content-viewer p {
+        font-size: 0.9rem;
+      }
+
+      :host ::ng-deep .content-viewer pre {
+        padding: 0.75rem;
+        font-size: 0.75rem;
+      }
+
+      :host ::ng-deep .content-viewer code {
+        font-size: 0.85rem;
       }
     }
   `]
