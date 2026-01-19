@@ -2,42 +2,43 @@ import { Component, input, HostListener, OnInit, Inject, PLATFORM_ID } from '@an
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ContentItem } from '../services/content.service';
-import { DrawerModule } from 'primeng/drawer';
-import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, DrawerModule, ButtonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   host: {
     class: 'block'
   },
   template: `
-    <p-drawer 
-      [(visible)]="isDrawerVisible"
-      position="left"
-      [modal]="isMobileView"
-      [showCloseIcon]="false"
-      [blockScroll]="isMobileView"
-      [closeOnEscape]="isMobileView"
-      [styleClass]="drawerStyleClass"
+    <!-- Backdrop for mobile -->
+    <div 
+      *ngIf="isDrawerVisible && isMobileView"
+      class="fixed inset-0 bg-black bg-opacity-50 z-40"
+      (click)="closeDrawer()"
+    ></div>
+
+    <!-- Drawer -->
+    <aside 
+      [class]="drawerClass"
+      [attr.aria-hidden]="!isDrawerVisible"
     >
-      <ng-template #header>
-        <div class="w-full px-6 py-4 border-b border-gray-700 mb-4">
-          <div class="flex justify-between items-center">
-            <h2 class="m-0 text-xl font-semibold text-white">Course Content</h2>
-            <button 
-              *ngIf="isMobileView"
-              class="bg-transparent border-none text-white text-3xl cursor-pointer p-0 w-8 h-8 flex items-center justify-center hover:bg-gray-700 rounded transition-colors"
-              (click)="closeDrawer()"
-              aria-label="Close menu"
-            >
-              &times;
-            </button>
-          </div>
+      <!-- Header -->
+      <div class="w-full px-6 py-4 border-b border-gray-700 mb-4">
+        <div class="flex justify-between items-center">
+          <h2 class="m-0 text-xl font-semibold text-white">Course Content</h2>
+          <button 
+            *ngIf="isMobileView"
+            class="bg-transparent border-none text-white text-3xl cursor-pointer p-0 w-8 h-8 flex items-center justify-center hover:bg-gray-700 rounded transition-colors"
+            (click)="closeDrawer()"
+            aria-label="Close menu"
+          >
+            &times;
+          </button>
         </div>
-      </ng-template>
+      </div>
       
+      <!-- Navigation -->
       <nav aria-label="Course navigation">
         <ul class="list-none m-0 p-0">
           @for (item of contentItems(); track item.id) {
@@ -60,25 +61,44 @@ import { ButtonModule } from 'primeng/button';
           }
         </ul>
       </nav>
-    </p-drawer>
+    </aside>
   `,
   styles: [`
-    :host ::ng-deep .p-drawer {
+    aside {
+      position: fixed;
+      left: 0;
+      width: 280px;
       background-color: #111827;
+      color: white;
+      overflow-y: auto;
+      transition: transform 0.3s ease-in-out;
+      z-index: 50;
     }
-    
-    :host ::ng-deep .p-drawer-content {
-      background-color: #111827;
+
+    /* Desktop styles */
+    @media (min-width: 769px) {
+      aside {
+        top: 56px;
+        height: calc(100vh - 56px);
+        transform: translateX(0);
+      }
+
+      aside[aria-hidden="true"] {
+        transform: translateX(-100%);
+      }
     }
-    
-    :host ::ng-deep .sidebar-desktop {
-      top: 56px;
-      height: calc(100vh - 56px);
-    }
-    
-    :host ::ng-deep .sidebar-mobile {
-      top: 0;
-      height: 100vh;
+
+    /* Mobile styles */
+    @media (max-width: 768px) {
+      aside {
+        top: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+      }
+
+      aside[aria-hidden="false"] {
+        transform: translateX(0);
+      }
     }
   `]
 })
@@ -100,10 +120,8 @@ export class SidebarComponent implements OnInit {
     }
   }
 
-  get drawerStyleClass(): string {
-    const baseClass = '!w-[280px] bg-gray-900 text-white overflow-y-auto';
-    const positionClass = this.isMobileView ? 'sidebar-mobile' : 'sidebar-desktop';
-    return `${baseClass} ${positionClass}`;
+  get drawerClass(): string {
+    return `drawer ${this.isMobileView ? 'mobile' : 'desktop'}`;
   }
 
   @HostListener('window:resize', [])
@@ -135,7 +153,7 @@ export class SidebarComponent implements OnInit {
 
   closeDrawer(): void {
     if (this.isMobileView) {
-      this.isDrawerVisible = !this.isDrawerVisible;
+      this.isDrawerVisible = false;
     }
   }
 

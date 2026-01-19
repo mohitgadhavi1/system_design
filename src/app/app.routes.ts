@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
 import { OverviewComponent } from './pages/overview/overview';
 import { ChapterComponent } from './pages/chapter/chapter';
+import { ProfileComponent } from './components/profile.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/overview', pathMatch: 'full' },
+    { path: 'profile', component: ProfileComponent },
     { path: 'overview', component: OverviewComponent },
     { path: 'chapter0', component: ChapterComponent, data: { chapterId: 'chapter0' } },
     { path: 'chapter1', component: ChapterComponent, data: { chapterId: 'chapter1' } },
