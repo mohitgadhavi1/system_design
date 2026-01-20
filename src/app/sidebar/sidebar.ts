@@ -1,7 +1,8 @@
-import { Component, input, HostListener, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, input, HostListener, OnInit, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ContentItem } from '../services/content.service';
+import { ProgressService } from '../services/progress.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -47,15 +48,25 @@ import { ContentItem } from '../services/content.service';
                 [routerLink]="item.path"
                 routerLinkActive="active"
                 #rla="routerLinkActive"
-                class="block px-6 py-3 text-gray-300 no-underline transition-all duration-200 border-l-4 border-transparent hover:text-white hover:bg-gray-800"
-                [class.active]="rla.isActive"
-                [class.!border-blue-500]="rla.isActive"
-                [class.!bg-gray-800]="rla.isActive"
-                [class.!text-white]="rla.isActive"
+                class="flex items-center justify-between px-6 py-3 no-underline transition-all duration-200 border-l-4 border-transparent hover:bg-gray-800"
+                [class.border-blue-500]="rla.isActive"
+                [class.bg-gray-800]="rla.isActive"
+                [class.text-white]="rla.isActive"
+                [class.text-gray-300]="!rla.isActive"
+                [class.hover:text-white]="!rla.isActive"
                 [attr.aria-current]="rla.isActive ? 'page' : null"
                 (click)="onLinkClick()"
               >
-                {{ item.title }}
+                <span [class.text-gray-400]="progressService.isChapterCompleted(item.id) && !rla.isActive">
+                    {{ item.title }}
+                </span>
+                @if (progressService.isChapterCompleted(item.id)) {
+                  <span class="text-green-500 ml-2" aria-label="Completed">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                }
               </a>
             </li>
           }
@@ -104,6 +115,7 @@ import { ContentItem } from '../services/content.service';
 })
 export class SidebarComponent implements OnInit {
   contentItems = input.required<ContentItem[]>();
+  progressService = inject(ProgressService);
 
   isMobileView = false;
   isDrawerVisible = false;

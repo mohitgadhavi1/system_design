@@ -16,8 +16,29 @@ import { signal, computed } from '@angular/core';
     </article>
     
     <ng-template #loading>
-      <div class="loading">
-        <p>Loading content...</p>
+      <div class="loading animate-pulse space-y-8 max-w-3xl mx-auto pt-12">
+        <!-- Title Skeleton -->
+        <div class="h-12 bg-gray-200 rounded w-3/4 mb-8"></div>
+        
+        <!-- Paragraph Skeleton -->
+        <div class="space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+            <div class="h-4 bg-gray-200 rounded w-11/12"></div>
+        </div>
+
+        <!-- Subheading Skeleton -->
+        <div class="h-8 bg-gray-200 rounded w-1/2 mt-8 mb-4"></div>
+
+        <!-- Paragraph Skeleton -->
+        <div class="space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-4/5"></div>
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+        </div>
+
+        <!-- Image/Block Skeleton -->
+        <div class="h-48 bg-gray-200 rounded w-full mt-8"></div>
       </div>
     </ng-template>
   `,
