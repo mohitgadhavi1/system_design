@@ -8,8 +8,8 @@ import { AuthService, User } from '../services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterLink, AsyncPipe],
   template: `
-    <header class="fixed top-0 left-0 right-0 h-14 bg-white shadow-sm z-50">
-      <div class="container mx-auto h-full px-4">
+    <header class="fixed top-0 left-0 right-0 h-14 bg-white  shadow-sm z-50 ">
+      <div class="   w-full h-full px-4">
         <div class="flex items-center justify-between h-full">
           <!-- Hamburger Menu Button -->
           <button 
@@ -27,7 +27,7 @@ import { AuthService, User } from '../services/auth.service';
           
           <!-- Logo / Title -->
           <div class="flex items-center flex-1 justify-center md:justify-start md:ml-4">
-            <h1 class="text-xl font-semibold text-gray-900 m-0">System Design Course</h1>
+            <h1 class="text-xl font-semibold text-gray-900 m-0">System Design </h1>
           </div>
           
           <!-- Profile Section -->

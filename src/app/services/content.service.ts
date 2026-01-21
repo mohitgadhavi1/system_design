@@ -29,7 +29,8 @@ export class ContentService {
             { id: 'chapter5', title: 'Chapter 5: Reliability', path: '/chapter5' },
             { id: 'chapter6', title: 'Chapter 6: Security', path: '/chapter6' },
             { id: 'chapter7', title: 'Chapter 7: Observability', path: '/chapter7' },
-            { id: 'chapter8', title: 'Chapter 8: Case Studies', path: '/chapter8' }
+            { id: 'chapter8', title: 'Chapter 8: Case Studies', path: '/chapter8' },
+            { id: 'chapter9', title: 'Chapter 9: URL Shortener Service', path: '/chapter9' }
         ];
         this.contentItems.set(items);
     }

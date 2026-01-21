@@ -16,5 +16,6 @@ export const routes: Routes = [
     { path: 'chapter6', component: ChapterComponent, data: { chapterId: 'chapter6' } },
     { path: 'chapter7', component: ChapterComponent, data: { chapterId: 'chapter7' } },
     { path: 'chapter8', component: ChapterComponent, data: { chapterId: 'chapter8' } },
+    { path: 'chapter9', component: ChapterComponent, data: { chapterId: 'chapter9' } },
     { path: '**', redirectTo: '/overview' }
 ];

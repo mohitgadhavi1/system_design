@@ -15,7 +15,7 @@ import { ProgressService } from '../services/progress.service';
     <!-- Backdrop for mobile -->
     <div 
       *ngIf="isDrawerVisible && isMobileView"
-      class="fixed inset-0 bg-black bg-opacity-50 z-40"
+      class="fixed inset-0  bg-opacity-50 z-40"
       (click)="closeDrawer()"
     ></div>
 

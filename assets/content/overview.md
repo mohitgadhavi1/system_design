@@ -1,6 +1,5 @@
-# System Design Course
 
-## Course Philosophy (Quietly Enforced)
+# Course Philosophy (Quietly Enforced)
 
 - **Concepts before tools**
 - **Constraints before solutions**
